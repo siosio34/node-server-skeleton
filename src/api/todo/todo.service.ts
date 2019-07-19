@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { Service } from "typedi";
+import { Repository, UpdateResult } from "typeorm";
 
-import { InjectRepository } from "typeorm-typedi-extensions";
+import { InjectRepository, OrmRepository } from "typeorm-typedi-extensions";
+import { CreateTodoDto, UpdateTodoDto } from "./dto";
 import { Todo } from "./todo.entity";
 import { TodoRepository } from "./todo.repository";
 
@@ -11,20 +13,24 @@ export default class TodoService {
   constructor(@InjectRepository() private todoRepository: TodoRepository) {}
 
   public async findAllTodos(): Promise<Todo[]> {
-    // const todos = await this.todoRepository.find();
-    return await this.todoRepository.find();
+    const todos = await this.todoRepository.find();
+    return todos;
   }
 
-  public findByIdTodo(req: Request, res: Response, next: NextFunction) {
-    return "findByIdTodo";
+  public findByIdTodo(id: number) {
+    return this.todoRepository.findOne(id);
   }
-  public createTodo(req: Request, res: Response, next: NextFunction) {
-    return "updateTodo";
+
+  public createTodo(creatoTodoDto: CreateTodoDto) {
+    return this.todoRepository.create(creatoTodoDto);
   }
-  public updateTodo(req: Request, res: Response, next: NextFunction) {
-    return "updateTodo";
+  public updateTodo(
+    id: number,
+    updateTodoDto: UpdateTodoDto
+  ): Promise<UpdateResult> {
+    return this.todoRepository.update(id, updateTodoDto);
   }
-  public removeTodo(req: Request, res: Response, next: NextFunction) {
-    return "removeTodo";
+  public removeTodo(id: number) {
+    // return this.todoRepository
   }
 }

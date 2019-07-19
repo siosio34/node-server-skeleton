@@ -1,8 +1,19 @@
 import "dotenv/config";
+import "reflect-metadata";
 
-import { createExpressServer, useContainer } from "routing-controllers";
+import {
+  createExpressServer,
+  useContainer as useContainerForRouting
+} from "routing-controllers";
 import { Container } from "typedi";
-import { createConnection } from "typeorm";
+import {
+  createConnection,
+  useContainer as useContainerForTypeorm
+} from "typeorm";
+
+import { Todo } from "api/todo/todo.entity";
+import { TodoRepository } from "api/todo/todo.repository";
+import TodoService from "api/todo/todo.service";
 
 process.on("uncaughtException", e => {
   process.exit(1);
@@ -12,14 +23,56 @@ process.on("unhandledRejection", e => {
   process.exit(1);
 });
 
-useContainer(Container);
+useContainerForTypeorm(Container);
+useContainerForRouting(Container);
 
-createConnection()
+// console.log("DAdadaadda", __dirname + "/api/**/*.entity.ts");
+
+// const fa = __dirname + "/api/**/*.entity.ts";
+
+// for (const route of readfa) {
+//   console.log("route", route);
+// }
+
+createConnection({
+  type: "postgres",
+  host: "localhost",
+  port: 5432,
+  username: "postgres",
+  password: "postgres",
+  database: "postgres",
+  synchronize: true,
+  logging: false,
+  entities: [__dirname + "/api/**/*.entity.ts"]
+})
   .then(async connection => {
-    createExpressServer({
-      controllers: [__dirname + "/api/**/*.ts"],
-      middlewares: [__dirname + "/middlewares/*.ts"]
-    }).listen(3000);
+    const app = createExpressServer({
+      routePrefix: "/api",
+      controllers: [__dirname + "/api/**/*.controller.ts"]
+    });
+
+    // middlewares: [__dirname + "/middlewares/*.ts"]
+
+    app.listen(process.env.PORT || 3000);
+
+    // const todo = new Todo();
+    // todo.title = "Dadada";
+    // todo.description = "dadadda";
+
+    // const repository = Container.get(TodoService);
+    // console.log("repository", repository);
+
+    // const todos = await repository.find();
+    // console.log("todos", todos);
+
+    // console.log("connection", ;
+
+    // const todo = new Todo();
+    // todo.title = "Dadada";
+    // todo.description = "dadadda";
+    // connection.getRepository(Todo).save(todo);
+
+    // const repository = await Container.get("TodoRepository");
 
     // console.log("connected");
 
