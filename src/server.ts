@@ -11,10 +11,6 @@ import {
   useContainer as useContainerForTypeorm
 } from "typeorm";
 
-import { Todo } from "api/todo/todo.entity";
-import { TodoRepository } from "api/todo/todo.repository";
-import TodoService from "api/todo/todo.service";
-
 process.on("uncaughtException", e => {
   process.exit(1);
 });
