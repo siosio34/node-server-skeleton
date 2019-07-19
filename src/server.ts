@@ -48,53 +48,10 @@ createConnection({
   .then(async connection => {
     const app = createExpressServer({
       routePrefix: "/api",
-      controllers: [__dirname + "/api/**/*.controller.ts"]
+      controllers: [__dirname + "/api/**/*.controller.ts"],
+      middlewares: [__dirname + "/middlewares/*.ts"]
     });
 
-    // middlewares: [__dirname + "/middlewares/*.ts"]
-
     app.listen(process.env.PORT || 3000);
-
-    // const todo = new Todo();
-    // todo.title = "Dadada";
-    // todo.description = "dadadda";
-
-    // const repository = Container.get(TodoService);
-    // console.log("repository", repository);
-
-    // const todos = await repository.find();
-    // console.log("todos", todos);
-
-    // console.log("connection", ;
-
-    // const todo = new Todo();
-    // todo.title = "Dadada";
-    // todo.description = "dadadda";
-    // connection.getRepository(Todo).save(todo);
-
-    // const repository = await Container.get("TodoRepository");
-
-    // console.log("connected");
-
-    // const post1 = new Post();
-    // post1.title = "TypeScript 2.0";
-    // post1.text = `New TypeScript version adds control flow based type analysis features.`;
-
-    // const post2 = new Post();
-    // post2.title = "Control flow based type analysis";
-    // post2.text = `TypeScript 2.0 implements a control flow-based type analysis for local variables and parameters.`;
-
-    // const repository = Container.get(PostRepository);
-    // await Promise.all([
-    //     repository.saveUsingRepository(post1),
-    //     repository.saveUsingManager(post2)
-    // ]);
-
-    // console.log("Saved successfully.");
-
-    // const loadedPosts = await repository.findAll();
-    // console.log("All loaded posts: ", loadedPosts);
   })
   .catch(error => console.log("Error: ", error));
-
-// middlewares: [__dirname + "/middlewares/*.ts"]
