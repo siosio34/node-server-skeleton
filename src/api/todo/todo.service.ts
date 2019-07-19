@@ -1,8 +1,7 @@
-import { NextFunction, Request, Response } from "express";
 import { Service } from "typedi";
-import { Repository, UpdateResult } from "typeorm";
+import { DeleteResult, UpdateResult } from "typeorm";
 
-import { InjectRepository, OrmRepository } from "typeorm-typedi-extensions";
+import { InjectRepository } from "typeorm-typedi-extensions";
 import { CreateTodoDto, UpdateTodoDto } from "./dto";
 import { Todo } from "./todo.entity";
 import { TodoRepository } from "./todo.repository";
@@ -13,8 +12,7 @@ export default class TodoService {
   constructor(@InjectRepository() private todoRepository: TodoRepository) {}
 
   public async findAllTodos(): Promise<Todo[]> {
-    const todos = await this.todoRepository.find();
-    return todos;
+    return this.todoRepository.find();
   }
 
   public findByIdTodo(id: number) {
@@ -24,13 +22,12 @@ export default class TodoService {
   public createTodo(creatoTodoDto: CreateTodoDto) {
     return this.todoRepository.create(creatoTodoDto);
   }
-  public updateTodo(
-    id: number,
-    updateTodoDto: UpdateTodoDto
-  ): Promise<UpdateResult> {
+  public updateTodo(updateTodoDto: UpdateTodoDto): Promise<UpdateResult> {
+    const { id } = updateTodoDto;
     return this.todoRepository.update(id, updateTodoDto);
   }
-  public removeTodo(id: number) {
+  public removeTodo(id: number): Promise<DeleteResult> {
+    return this.todoRepository.delete(id);
     // return this.todoRepository
   }
 }

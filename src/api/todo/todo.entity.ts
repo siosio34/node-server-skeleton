@@ -2,7 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from "typeorm";
 
 @Entity()
@@ -19,6 +20,6 @@ export class Todo {
   @CreateDateColumn({ type: "timestamptz" })
   public createColumn: Date;
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @UpdateDateColumn({ type: "timestamptz" })
   public updateColumn: Date;
 }
