@@ -7,7 +7,7 @@ import {
 import { NextFunction, Request, Response } from "express";
 
 @Middleware({ type: "after" })
-export class CustomErrorHandler implements ExpressErrorMiddlewareInterface {
+export class ErrorMiddleware implements ExpressErrorMiddlewareInterface {
   public error(
     error: HttpError,
     req: Request,
